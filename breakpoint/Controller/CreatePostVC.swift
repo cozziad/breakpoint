@@ -21,6 +21,11 @@ class CreatePostVC: UIViewController {
         messageFieldText.delegate = self
         sendBtn.bindToKeyboard()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super .viewWillAppear(animated)
+        self.profileEmailLbl.text = Auth.auth().currentUser?.email
+    }
 
     @IBAction func sendBtnPressed(_ sender: Any) {
         if messageFieldText.text == nil || messageFieldText.text == "" {return}
