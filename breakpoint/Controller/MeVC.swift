@@ -22,6 +22,12 @@ class MeVC: UIViewController {
     
 
     @IBAction func logoutBtnPressed(_ sender: Any) {
+        AuthService.instance.signOut()
+        //var window: UIWindow?
+        //let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        //let authVC = storyboard.instantiateViewController(withIdentifier: "AuthVC")
+        //window?.makeKeyAndVisible()
+        //window?.rootViewController?.present(authVC,animated: true,completion: nil)
     }
     
 

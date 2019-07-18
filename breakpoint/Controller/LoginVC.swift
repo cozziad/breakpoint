@@ -18,8 +18,6 @@ class LoginVC: UIViewController {
         super.viewDidLoad()
         emailField.delegate = self
         passwordField.delegate = self
-
-        // Do any additional setup after loading the view.
     }
     
     @IBAction func closeBtnPressed(_ sender: Any) {dismiss(animated: true, completion: nil)}

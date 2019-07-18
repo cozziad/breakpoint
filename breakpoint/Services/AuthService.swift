@@ -29,4 +29,8 @@ class AuthService {
         }
     }
     
+    func signOut() {
+        do {try Auth.auth().signOut()} catch{return}
+    }
+    
 }
