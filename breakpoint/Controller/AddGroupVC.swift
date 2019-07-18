@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class AddGroupVC: UIViewController {
 
@@ -17,18 +18,67 @@ class AddGroupVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var doneBtn: UIButton!
     
+    var emailArray = [String]()
+    var chosenUserArray = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        tableView.delegate = self
+        tableView.dataSource = self
+        addPeopleField.delegate = self
+        addPeopleField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         // Do any additional setup after loading the view.
     }
     
-
-    @IBAction func closePressed(_ sender: Any) {
-    }
-    @IBAction func donePressed(_ sender: Any) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        doneBtn.isHidden = true
     }
     
+    @objc func textFieldDidChange(){
+        if addPeopleField.text == "" {
+            emailArray = []
+            tableView.reloadData()
+        }
+        else{
+            DataService.instance.getEmail(forSearchQuery: addPeopleField.text!) { (returnedEmailArray) in
+                self.emailArray = returnedEmailArray
+                self.tableView.reloadData()
+            }
+        }
+    }
 
+    @IBAction func closePressed(_ sender: Any) {dismiss(animated: true, completion: nil)}
+    @IBAction func donePressed(_ sender: Any) {}
+}
+
+extension AddGroupVC: UITableViewDelegate, UITableViewDataSource{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return emailArray.count}
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "userCell") as? UserCell else {return UITableViewCell()}
+        let userImage = UIImage(named: "defaultProfileImage")
+        let isChecked = chosenUserArray.contains(emailArray[indexPath.row])
+        cell.configureCell(profileImage: userImage!, email: emailArray[indexPath.row] , isSelected: isChecked)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? UserCell else {return}
+        if !chosenUserArray.contains(cell.emailLbl.text!) && cell.checkImg.isHidden == false{
+            chosenUserArray.append(cell.emailLbl.text!)
+            addPeopleLbl.text = chosenUserArray.joined(separator: ", ")
+            doneBtn.isHidden = false
+        }
+        else if cell.checkImg.isHidden == true{
+            chosenUserArray = chosenUserArray.filter({$0 != cell.emailLbl.text!})
+            if chosenUserArray.count > 0 {addPeopleLbl.text = chosenUserArray.joined(separator: ", ")}
+            else {addPeopleLbl.text = "add people to group"; doneBtn.isHidden = true}
+        }
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {return 1}
+}
+extension AddGroupVC: UITextFieldDelegate{
+    
 }
