@@ -49,7 +49,18 @@ class AddGroupVC: UIViewController {
     }
 
     @IBAction func closePressed(_ sender: Any) {dismiss(animated: true, completion: nil)}
-    @IBAction func donePressed(_ sender: Any) {}
+    @IBAction func donePressed(_ sender: Any) {
+        print ("got here 1")
+        if titleField.text == nil || titleField.text == "" || descField.text == nil || descField.text == "" {return}
+        print ("got here")
+        DataService.instance.getIds(forUsernames: chosenUserArray) { (userIds) in
+            var idsArray = userIds
+            idsArray.append((Auth.auth().currentUser?.uid)!)
+            DataService.instance.createGroup(withTitle: self.titleField.text!, andDescription: self.descField.text!, andUserIds: idsArray, handler: { (complete) in
+                if complete{self.dismiss(animated: true, completion: nil)}
+            })
+        }
+    }
 }
 
 extension AddGroupVC: UITableViewDelegate, UITableViewDataSource{
