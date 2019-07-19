@@ -36,6 +36,10 @@ class GroupFeedVC: UIViewController {
             DataService.instance.getAllMessages(forGroup: self.group!, handler: { (returnedGroupMessages) in
                 self.messages = returnedGroupMessages
                 self.tableView.reloadData()
+                
+                if self.messages.count > 0{
+                    self.tableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .none, animated: true)
+                }
             })
         }
     }
@@ -44,7 +48,9 @@ class GroupFeedVC: UIViewController {
         self.group = group
     }
     
-    @IBAction func backPressed(_ sender: Any) {dismiss(animated: true, completion: nil)}
+    @IBAction func backPressed(_ sender: Any) {//dismiss(animated: true, completion: nil)
+        dismissDetail()
+    }
     @IBAction func sendBtnPressed(_ sender: Any) {
         messageTextField.isEnabled = false
         sendBtn.isEnabled = false
