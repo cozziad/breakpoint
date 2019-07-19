@@ -512,6 +512,7 @@
                         <outlet property="groupNameLbl" destination="6PC-wb-Xks" id="79y-Fz-tqF"/>
                         <outlet property="membersLbl" destination="eUn-kt-MAY" id="cFM-ju-7bk"/>
                         <outlet property="messageTextField" destination="IGM-1R-SKq" id="myj-qd-bxI"/>
+                        <outlet property="sendBtn" destination="Eqw-1b-MfN" id="4Qx-5g-gbL"/>
                         <outlet property="sendBtnView" destination="N16-He-yNs" id="TyT-51-jNP"/>
                         <outlet property="tableView" destination="ncU-fP-d58" id="2Ay-mk-4Fs"/>
                     </connections>
